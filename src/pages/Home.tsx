@@ -17,14 +17,15 @@ const Home: React.FC<Props> = (props: Props) => {
   const [searchText, setSearchText] = React.useState<string>(query.get("s") != null ? query.get("s")! : "");
   const [soundsResult, setSounds] = React.useState<SoundResult | undefined>(undefined);
   const [page, setPage] = React.useState<number>(query.get("page") != null ? Number(query.get("page")!) : 1);
-  const updateQuery = () => {
+  const updateQuery = React.useCallback(() => {
     const params = new URLSearchParams(props.location.search)
     preSearchText && params.set("s", preSearchText)
     page > 1 && params.set("page", `${page}`)
     history().push({
       search: params.toString(),
     })
-  }
+  }, [page, preSearchText, props.location.search])
+
   React.useEffect(() => {
     updateQuery()
   }, [page, updateQuery])
