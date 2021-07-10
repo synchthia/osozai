@@ -26,6 +26,15 @@
     src: url('./fonts/mplus-1p-medium.woff2');
 }
 
+.centerize {
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    -webkit-transform: translateY(-50%) translateX(-50%);
+}
+
 .btn-primary:hover {
     color: #9A9A9A;
     fill: #9A9A9A;

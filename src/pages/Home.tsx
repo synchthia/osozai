@@ -26,7 +26,7 @@ const Home: React.FC<Props> = (props: Props) => {
         search: params.toString(),
       })
     }
-  }, [page, searchText, props.location.search])
+  }, [page, searchText, props.location.search, soundsResult])
 
   React.useEffect(() => {
     updateQuery()
@@ -78,7 +78,7 @@ const Home: React.FC<Props> = (props: Props) => {
           }} />
         </Container>
         :
-        <h1 style={{ textAlign: "center" }}>Loading...</h1>
+        <h1 className={"centerize"}>Loading...</h1>
       }
     </div>
   )
