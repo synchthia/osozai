@@ -54,12 +54,12 @@
     opacity: initial;
 }
 
-.table-dark {
-    background-color: #111112;
+.table-dark, .table-dark > :not(caption) > * > * {
+    background-color: #151515;
 }
 
 .table-dark td,.table-dark th,.table-dark thead th {
-    border-color: #151515;
+    border-color: #111112;
 }
 
 body {

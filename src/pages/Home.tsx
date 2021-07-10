@@ -1,16 +1,57 @@
 import React from "react";
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
+import { Navbar, Container, Nav, NavDropdown, Form } from "react-bootstrap";
+import { propTypes } from "react-bootstrap/esm/Image";
+import { SoundTable } from "../components/SoundTable";
 import { fetchSounds, SoundResult } from "../sozai/sozai";
+import history from 'history/createBrowserHistory';
+import { RouteComponentProps, useLocation } from "react-router";
 
-const Home: React.FC = () => {
+interface Props extends RouteComponentProps<{}> { }
+
+const Home: React.FC<Props> = (props: Props) => {
+  console.log(props.match);
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+  let query = useQuery();
+  const [preSearchText, setPreSearchText] = React.useState<string>(query.get("s") != null ? query.get("s")! : "");
+  const [searchText, setSearchText] = React.useState<string>(query.get("s") != null ? query.get("s")! : "");
   const [soundsResult, setSounds] = React.useState<SoundResult | undefined>(undefined);
+  const [page, setPage] = React.useState<number>(query.get("page") != null ? Number(query.get("page")!) : 1);
+  React.useEffect(() => {
+    updateQuery()
+  }, [page])
+
   const fetch = () => {
+    console.log("Fetching...")
     fetchSounds(setSounds);
   }
 
   React.useEffect(() => {
     fetch();
+    if (soundsResult?.sounds) {
+      console.log(soundsResult?.sounds)
+    }
   }, [])
+
+  const updateQuery = () => {
+    const params = new URLSearchParams(props.location.search)
+    preSearchText && params.set("s", preSearchText)
+    page > 1 && params.set("page", `${page}`)
+    history().push({
+      search: params.toString(),
+    })
+  }
+
+  const onSubmit = (event: any) => {
+    console.log("update...")
+    // propsのhandleUpdateに確定後の処理を委譲する
+    setSearchText(preSearchText)
+    updateQuery()
+    // 送信時のページ遷移を抑止する
+    event.preventDefault()
+    event.stopPropagation()
+  }
 
   return (
     <div>
@@ -20,14 +61,27 @@ const Home: React.FC = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#home" active>Home</Nav.Link>
-              <Nav.Link href="#link">Trend</Nav.Link>
-              <Nav.Link href="#link">Recent</Nav.Link>
+              <Nav.Link href="/" active>Home</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <h1>...</h1>
+      {soundsResult?.sounds ?
+        <Container fluid="lg">
+          <Form onSubmit={onSubmit}>
+            <Form.Group>
+              <Form.Control type="text" placeholder="Search?" onChange={(e: any) => {
+                setPreSearchText(e.currentTarget.value);
+              }} />
+            </Form.Group>
+          </Form>
+          <SoundTable sounds={soundsResult?.sounds} search={searchText} path={searchText} page={page} onPage={(p: number) => {
+            setPage(p)
+          }} />
+        </Container>
+        :
+        <h1 style={{ textAlign: "center" }}>Loading...</h1>
+      }
     </div>
   )
 }
