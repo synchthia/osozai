@@ -65,7 +65,7 @@ const Home: React.FC<Props> = (props: Props) => {
         <Container fluid="lg">
           <Form onSubmit={onSubmit}>
             <Form.Group>
-              <Form.Control type="text" placeholder="Search?" onChange={(e: any) => {
+              <Form.Control type="text" placeholder="Search?" defaultValue={searchText} onChange={(e: any) => {
                 setPreSearchText(e.currentTarget.value);
               }} />
             </Form.Group>
