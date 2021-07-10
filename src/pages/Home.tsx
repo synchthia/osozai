@@ -1,6 +1,5 @@
 import React from "react";
-import { Navbar, Container, Nav, NavDropdown, Form } from "react-bootstrap";
-import { propTypes } from "react-bootstrap/esm/Image";
+import { Navbar, Container, Nav, Form } from "react-bootstrap";
 import { SoundTable } from "../components/SoundTable";
 import { fetchSounds, SoundResult } from "../sozai/sozai";
 import history from 'history/createBrowserHistory';
@@ -18,22 +17,6 @@ const Home: React.FC<Props> = (props: Props) => {
   const [searchText, setSearchText] = React.useState<string>(query.get("s") != null ? query.get("s")! : "");
   const [soundsResult, setSounds] = React.useState<SoundResult | undefined>(undefined);
   const [page, setPage] = React.useState<number>(query.get("page") != null ? Number(query.get("page")!) : 1);
-  React.useEffect(() => {
-    updateQuery()
-  }, [page])
-
-  const fetch = () => {
-    console.log("Fetching...")
-    fetchSounds(setSounds);
-  }
-
-  React.useEffect(() => {
-    fetch();
-    if (soundsResult?.sounds) {
-      console.log(soundsResult?.sounds)
-    }
-  }, [])
-
   const updateQuery = () => {
     const params = new URLSearchParams(props.location.search)
     preSearchText && params.set("s", preSearchText)
@@ -42,6 +25,18 @@ const Home: React.FC<Props> = (props: Props) => {
       search: params.toString(),
     })
   }
+  React.useEffect(() => {
+    updateQuery()
+  }, [page, updateQuery])
+
+  const fetch = () => {
+    console.log("Fetching...")
+    fetchSounds(setSounds);
+  }
+
+  React.useEffect(() => {
+    fetch();
+  }, [])
 
   const onSubmit = (event: any) => {
     console.log("update...")

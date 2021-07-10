@@ -38,7 +38,6 @@ export const SoundTable: React.FC<Props> = (props: Props) => {
   })
 
   React.useEffect(() => {
-    // setPage(1)
     return () => {
       setPage(1)
     }
@@ -89,11 +88,6 @@ export const SoundTable: React.FC<Props> = (props: Props) => {
               </tr>
             )
           })}
-          {/* {props.sounds.map((s: Sound) => {
-        return (
-          <p key={s.path}>{s.path}</p>
-        )
-      })} */}
         </tbody>
       </Table>
       {result.length >= 1 &&
