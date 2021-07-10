@@ -18,17 +18,19 @@ const Home: React.FC<Props> = (props: Props) => {
   const [soundsResult, setSounds] = React.useState<SoundResult | undefined>(undefined);
   const [page, setPage] = React.useState<number>(query.get("page") != null ? Number(query.get("page")!) : 1);
   const updateQuery = React.useCallback(() => {
-    const params = new URLSearchParams(props.location.search)
-    preSearchText && params.set("s", preSearchText)
-    page > 1 && params.set("page", `${page}`)
-    history().push({
-      search: params.toString(),
-    })
-  }, [page, preSearchText, props.location.search])
+    if (soundsResult) {
+      const params = new URLSearchParams(props.location.search)
+      searchText && params.set("s", searchText)
+      page > 1 && params.set("page", `${page}`)
+      history().push({
+        search: params.toString(),
+      })
+    }
+  }, [page, searchText, props.location.search])
 
   React.useEffect(() => {
     updateQuery()
-  }, [page, updateQuery])
+  }, [updateQuery])
 
   const fetch = () => {
     console.log("Fetching...")
