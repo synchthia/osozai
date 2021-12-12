@@ -75,15 +75,15 @@ export const SoundTable: React.FC<Props> = (props: Props) => {
         <tbody>
           {result.map((s: Sound) => {
             return (
-              <tr key={s.path} style={{ cursor: "pointer" }} onClick={() => {
-                play(s.url)
-              }}>
-                <td>
+              <tr>
+                <td key={s.path} style={{ cursor: "pointer" }} onClick={() => {
+                  play(s.url)
+                }}>
                   <h1 style={{ textTransform: "none" }}>{s.id}</h1>
                   {s.path}
                 </td>
                 <td>
-                  <Button />
+                  <Button onClick={() => { navigator.clipboard.writeText(s.id); }}>Copy</Button>
                 </td>
               </tr>
             )
