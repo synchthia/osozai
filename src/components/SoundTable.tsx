@@ -83,7 +83,7 @@ export const SoundTable: React.FC<Props> = (props: Props) => {
                   {s.path}
                 </td>
                 <td>
-                  <Button onClick={() => { navigator.clipboard.writeText(s.id); }}>Copy</Button>
+                  <Button variant="secondary" onClick={() => { navigator.clipboard.writeText(s.id); }}>Copy</Button>
                 </td>
               </tr>
             )
