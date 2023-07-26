@@ -1,13 +1,13 @@
-import * as Axios from 'axios';
+import * as Axios from "axios";
 
 const axios = Axios.default.create();
 axios.interceptors.request.use(
-  response => {
+  (response) => {
     return response;
   },
-  error => {
+  (error) => {
     return Promise.reject(error);
   }
-)
+);
 
 export default axios;

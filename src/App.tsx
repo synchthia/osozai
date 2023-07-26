@@ -1,18 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './pages/Home';
-import './themes/common.css';
-import './themes/ui.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Folders from "./pages/Folders";
+import { PlayerProvider } from "./player/PlayerProvider";
+import { SozaiProvider } from "./sozai/SozaiProvider";
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/:path" component={Home} />
-      </Switch>
-    </Router>
+    <SozaiProvider>
+      <PlayerProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/*" element={<Folders />} />
+          </Routes>
+        </BrowserRouter>
+      </PlayerProvider>
+    </SozaiProvider>
   );
-}
+};
 
 export default App;
