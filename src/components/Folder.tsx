@@ -1,7 +1,13 @@
 import React from "react";
 import { Content } from "./Path";
 import { Tooltip, Button } from "flowbite-react";
-import { IoCopy, IoFolderOutline, IoMusicalNotesSharp, IoPaperPlane } from "react-icons/io5";
+import {
+  IoCopy,
+  IoDownload,
+  IoFolderOutline,
+  IoMusicalNotesSharp,
+  IoPaperPlane,
+} from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { PlayerContext } from "../player/PlayerProvider";
 
@@ -16,8 +22,8 @@ const FileTitle = (props: any) => {
 };
 
 export const Folder: React.FC<Props> = (props: Props) => {
-  const folders = props.contents.filter((e) => e.type === 'FOLDER');
-  const files = props.contents.filter((e) => e.type === 'FILE');
+  const folders = props.contents.filter((e) => e.type === "FOLDER");
+  const files = props.contents.filter((e) => e.type === "FILE");
 
   const playerContext = React.useContext(PlayerContext);
 
@@ -67,25 +73,44 @@ export const Folder: React.FC<Props> = (props: Props) => {
                 <td className="px-6 py-3 text-right">
                   <Button.Group>
                     {file.metadata && file.metadata.sound && (
-                      <Tooltip content={`Copied: ${file.metadata?.sound?.names[0]}`} trigger="click">
-                        <Button
-                          data-tooltip-target="tooltip-default"
-                          type="button"
-                          color="gray"
-                          onClick={() => {
-                            const name = file.metadata?.sound?.names[0];
-                            name && navigator.clipboard.writeText(name);
-                          }}
+                      <>
+                        <Tooltip
+                          content={`Open: ${file.metadata?.sound?.names[0]}`}
+                          trigger="click"
                         >
-                          <IoCopy className="mr-1" />
-                          Copy
-                        </Button>
-                      </Tooltip>
+                          <Button
+                            data-tooltip-target="tooltip-default"
+                            type="button"
+                            color="gray"
+                            href={file.metadata?.sound?.url}
+                          >
+                            <IoDownload className="mr-1" />
+                            Download
+                          </Button>
+                        </Tooltip>
+
+                        <Tooltip
+                          content={`Copied: ${file.metadata?.sound?.names[0]}`}
+                          trigger="click"
+                        >
+                          <Button
+                            data-tooltip-target="tooltip-default"
+                            type="button"
+                            color="gray"
+                            className="ml-2"
+                            onClick={() => {
+                              const name = file.metadata?.sound?.names[0];
+                              name && navigator.clipboard.writeText(name);
+                            }}
+                          >
+                            <IoCopy className="mr-1" />
+                            Copy
+                          </Button>
+                        </Tooltip>
+                      </>
                     )}
-                    {props.jump ?
-                      <Link
-                        to={`/${file.metadata?.sound?.namespaces[0]}`}
-                      >
+                    {props.jump ? (
+                      <Link to={`/${file.metadata?.sound?.namespaces[0]}`}>
                         <Button
                           data-tooltip-target="tooltip-default"
                           type="button"
@@ -100,7 +125,9 @@ export const Folder: React.FC<Props> = (props: Props) => {
                           Jump
                         </Button>
                       </Link>
-                      : <></>}
+                    ) : (
+                      <></>
+                    )}
                   </Button.Group>
                 </td>
               </tr>
